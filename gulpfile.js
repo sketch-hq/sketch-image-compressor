@@ -11,7 +11,7 @@ var path        = require('path')
 var runSequence = require('run-sequence')
 var source      = require('vinyl-source-stream')
 var spawn       = require("gulp-spawn")
-var uglify      = require("gulp-uglifyjs")
+var uglify      = require("gulp-uglify")
 
 var SKETCH_PLUGINS_FOLDER = path.join(expandTilde('~'), '/Library/Application Support/com.bohemiancoding.sketch3/Plugins');
 

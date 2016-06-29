@@ -12,15 +12,15 @@ var environment = {
   emojis: ['🕛', '🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚']
 }
 
-function prettyBytes(size){
+var prettyBytes = function(size){
   var r = prettyBytesOriginal(size).toUpperCase().replace(/\sB/g,' bytes')
   return r
 }
-function showMessage(txt, timeout){
+var showMessage = function(txt, timeout){
   var time = timeout || 5
   NSApplication.sharedApplication().orderedDocuments().firstObject().displayMessage_timeout('Image Compressor: ' + txt, time)
 }
-function getArgumentsForCompressor(compressorName, fileName, options){
+var getArgumentsForCompressor = function(compressorName, fileName, options){
   var args
   switch (compressorName) {
   case 'advpng':
@@ -309,7 +309,7 @@ function getArgumentsForCompressor(compressorName, fileName, options){
   }
   return args
 }
-function runCompressor(context, compressorName, fileName, options){
+var runCompressor = function(context, compressorName, fileName, options){
   // log('Running compressor: ' + compressorName + ' for image ' + fileName)
   var compressorPath = context.plugin.urlForResourceNamed(compressorName).path()
   var compressTask = NSTask.alloc().init()
@@ -322,7 +322,7 @@ function runCompressor(context, compressorName, fileName, options){
   // compressTask.waitUntilExit() // This blocks the UI, which sucks for non-trivial jobs
   log(compressorName + ': ' + fileName + ' — ' + (prettyBytes(fileSizeForPath(fileName))))
 }
-function runFullCompressor(context, fileObject){
+var runFullCompressor = function(context, fileObject){
   if (fileObject.type == 'png' || fileObject.type == 'jpg') {
     var compressorPath
     if (fileObject.type == 'png') {
@@ -340,17 +340,17 @@ function runFullCompressor(context, fileObject){
     log('Full Compression: ' + fileObject.path + ' — ' + (prettyBytes(fileSizeForPath(fileObject.path))))
   }
 }
-function fileSizeForPath(path){
+var fileSizeForPath = function(path){
   var fileSize = 0
   if (path) {
     fileSize = NSFileManager.defaultManager().attributesOfItemAtPath_error(path, nil).fileSize()
   }
   return fileSize
 }
-function ratioForNumbers(one, two){
+var ratioForNumbers = function(one, two){
   return (100 - ((two * 100) / one)).toFixed(2) + '%'
 }
-function readSettingsFromFile(){
+var readSettingsFromFile = function(){
   // var settingsFilePath = MSPluginManager.mainPluginsFolderURL().path() + '/image-compressor.json'
   // if (!NSFileManager.defaultManager().fileExistsAtPath(settingsFilePath)) {
   //   // Copy file from Resources folder
@@ -358,7 +358,7 @@ function readSettingsFromFile(){
   // log('Reading defaults from JSON file')
   // var settings = JSON.parse(NSString.stringWithContentsOfFile_encoding_error(settingsFilePath, NSUTF8StringEncoding, nil))
 }
-function onInterval(context){
+var onInterval = function(context){
   var runningTime = prettyMs(progress * 100)
   var ratioPerCompressor = 100 / environment.totalCompressors
 
@@ -390,7 +390,7 @@ function onInterval(context){
     progress++
   }
 }
-function getFilesToCompress(exportedAssets){
+var getFilesToCompress = function(exportedAssets){
   var filesToCompress = []
   for (var i=0; i < exportedAssets.count(); i++) {
     var currentExport = exportedAssets.objectAtIndex(i)
@@ -410,7 +410,7 @@ function getFilesToCompress(exportedAssets){
   }
   return filesToCompress
 }
-function openFileDialog(path){
+var openFileDialog = function(path){
   var openDlg = NSOpenPanel.openPanel()
   // var openDlg = NSSavePanel.savePanel()
   openDlg.setTitle('Export & Compress All Assets In…')

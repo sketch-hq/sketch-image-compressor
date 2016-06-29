@@ -1,11 +1,8 @@
 {
-  "name": "sketch-imagemin",
+  "name": "sketch-image-compressor",
   "version": "1.0.0",
-  "description": "A Plugin to compress bitmap images exported from Sketch",
-  "main": "index.js",
-  "directories": {
-    "example": "examples"
-  },
+  "description": "A Plugin for Sketch that compresses your bitmap assets, to keep filesize to a minimum.",
+  "main": "src/plugin.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -1,7 +1,7 @@
 {
   "name": "sketch-image-compressor",
-  "version": "1.0.0",
-  "description": "A Plugin for Sketch that compresses your bitmap assets, to keep filesize to a minimum.",
+  "version": "1.2.5",
+  "description": "A Plugin that compresses bitmap assets, right when you export them. This Plugin *requires* Sketch 3.8.",
   "main": "src/plugin.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

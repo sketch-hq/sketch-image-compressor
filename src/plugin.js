@@ -432,23 +432,12 @@ export const SketchPlugin = {
           if (environment.filesToCompress.length > 0) {
             for (var p = 0; p < environment.filesToCompress.length; p++) {
               var currentFile = environment.filesToCompress[p];
-              // TODO: Running compressors in parallel is a pretty stupid idea, so please fix that before release…
               // PNG Compressors.
               if (currentFile.type == 'png') {
-                // Slow compression, run only manually
-                // runCompressor(context, 'advpng', currentFile.path)
-                // runCompressor(context, 'optipng', currentFile.path)
-                // runCompressor(context, 'pngcrush', currentFile.path)
-                // runCompressor(context, 'pngout', currentFile.path)
-                // runCompressor(context, 'zopflipng', currentFile.path)
-                
-                // Fast compression, run automatically
                 runCompressor(context, 'optipng', currentFile.path, 'fast')
               }
               if (currentFile.type == 'jpg') {
                 runCompressor(context, 'jpegoptim', currentFile.path)
-                // 'jpegtran' doesn't seem to be doing much, TBH…
-                // runCompressor(context, 'jpegtran', currentFile.path)
               }
             }
           } else {

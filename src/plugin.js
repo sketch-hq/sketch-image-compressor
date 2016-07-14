@@ -490,7 +490,6 @@ export const SketchPlugin = {
         }
       },
       run(context) {
-        var startTime = new Date()
         if (context.actionContext) {
           // Plugin was triggered automatically
           compressAutomatically(context)

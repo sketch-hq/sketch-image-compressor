@@ -1,5 +1,6 @@
 var prettyBytesOriginal = require('pretty-bytes')
 var prettyMs            = require('pretty-ms')
+
 var pluginInterval
 var progress = 0
 var environment = {
@@ -398,6 +399,74 @@ var openFileDialog = function(path){
   }
   return ret
 }
+var exportAndCompress = function(context){
+  var potentialExports = context.document.allExportableLayers()
+  if (potentialExports.count() > 0) {
+    showMessage('Exporting compressed assets. This is going to take a bit…')
+    var exportFolder = openFileDialog()
+    if (exportFolder) {
+      // TODO: If there's any exportable layer selected, only export those. Otherwise, export everything under the sun
+      log(`Lets export ${potentialExports.count()} layers`)
+      var exports = NSMutableArray.alloc().init()
+      for (var exportCount=0; exportCount < potentialExports.count(); exportCount++) {
+        var exportableLayer = potentialExports.objectAtIndex(exportCount)
+        var requests = MSExportRequest.exportRequestsFromExportableLayer(exportableLayer)
+        if (requests.count() > 0) {
+          for (var j=0; j < requests.count(); j++) {
+            var request = requests.objectAtIndex(j)
+            var path = NSString.pathWithComponents([exportFolder, request.name() + '.' + request.format()])
+            exports.addObject({ request: request, path: path })
+          }
+        }
+      }
+      // First we'll need to actually export the assets!
+      for (var k=0; k < exports.count(); k++) {
+        var currentExport = exports.objectAtIndex(k)
+        var render
+        if (currentExport.request.format() == "svg") {
+          render = MSExportRendererWithSVGSupport.exporterForRequest_colorSpace(currentExport.request, NSColorSpace.sRGBColorSpace())
+        } else {
+          render = MSExporter.exporterForRequest_colorSpace(currentExport.request, NSColorSpace.sRGBColorSpace())
+        }
+        render.data().writeToFile_atomically(currentExport.path, true)
+      }
+      // …and then we'll be able to compress them :)
+      environment.filesToCompress = getFilesToCompress(exports)
+      if (environment.filesToCompress.length > 0) {
+        for (var p = 0; p < environment.filesToCompress.length; p++) {
+          var currentFile = environment.filesToCompress[p];
+          runFullCompressor(context, currentFile)
+        }
+      } else {
+        // showMessage('nothing to compress')
+        coscript.setShouldKeepAround(false)
+      }
+    }
+  } else {
+    showMessage('There are no exportable layers in the document.')
+    coscript.setShouldKeepAround(false)
+  }
+}
+var compressAutomatically = function(context){
+
+  environment.filesToCompress = getFilesToCompress(context.actionContext.exports)
+
+  if (environment.filesToCompress.length > 0) {
+    for (var p = 0; p < environment.filesToCompress.length; p++) {
+      var currentFile = environment.filesToCompress[p];
+      // PNG Compressors.
+      if (currentFile.type == 'png') {
+        runCompressor(context, 'optipng', currentFile.path, 'fast')
+      }
+      if (currentFile.type == 'jpg') {
+        runCompressor(context, 'jpegoptim', currentFile.path)
+      }
+    }
+  } else {
+    // showMessage('nothing to compress')
+    coscript.setShouldKeepAround(false)
+  }
+}
 
 export const SketchPlugin = {
   name: "Sketch Image Compressor",
@@ -424,75 +493,10 @@ export const SketchPlugin = {
         var startTime = new Date()
         if (context.actionContext) {
           // Plugin was triggered automatically
-          // showMessage('Starting compression. This will take a while…')
-          // log(context.actionContext.exports)
-
-          environment.filesToCompress = getFilesToCompress(context.actionContext.exports)
-
-          if (environment.filesToCompress.length > 0) {
-            for (var p = 0; p < environment.filesToCompress.length; p++) {
-              var currentFile = environment.filesToCompress[p];
-              // PNG Compressors.
-              if (currentFile.type == 'png') {
-                runCompressor(context, 'optipng', currentFile.path, 'fast')
-              }
-              if (currentFile.type == 'jpg') {
-                runCompressor(context, 'jpegoptim', currentFile.path)
-              }
-            }
-          } else {
-            // showMessage('nothing to compress')
-            coscript.setShouldKeepAround(false)
-          }
+          compressAutomatically(context)
         } else {
           // Plugin was triggered from the menu, so crush with all the power we've got : )
-          var potentialExports = context.document.allExportableLayers()
-          if (potentialExports.count() > 0) {
-            showMessage('Exporting compressed assets. This is going to take a bit…')
-            var exportFolder = openFileDialog()
-            if (exportFolder) {
-              // TODO: If there's any exportable layer selected, only export those. Otherwise, export everything under the sun
-              log(`Lets export ${potentialExports.count()} layers`)
-              var exports = NSMutableArray.alloc().init()
-              for (var exportCount=0; exportCount < potentialExports.count(); exportCount++) {
-                var exportableLayer = potentialExports.objectAtIndex(exportCount)
-                var requests = MSExportRequest.exportRequestsFromExportableLayer(exportableLayer)
-                if (requests.count() > 0) {
-                  for (var j=0; j < requests.count(); j++) {
-                    var request = requests.objectAtIndex(j)
-                    var path = NSString.pathWithComponents([exportFolder, request.name() + '.' + request.format()])
-                    exports.addObject({ request: request, path: path })
-                  }
-                }
-              }
-
-              // First we'll need to actually export the assets!
-              for (var k=0; k < exports.count(); k++) {
-                var currentExport = exports.objectAtIndex(k)
-                var render
-                if (currentExport.request.format() == "svg") {
-                  render = MSExportRendererWithSVGSupport.exporterForRequest_colorSpace(currentExport.request, NSColorSpace.sRGBColorSpace())
-                } else {
-                  render = MSExporter.exporterForRequest_colorSpace(currentExport.request, NSColorSpace.sRGBColorSpace())
-                }
-                render.data().writeToFile_atomically(currentExport.path, true)
-              }
-              // …and then we'll be able to compress them :)
-              environment.filesToCompress = getFilesToCompress(exports)
-              if (environment.filesToCompress.length > 0) {
-                for (var p = 0; p < environment.filesToCompress.length; p++) {
-                  var currentFile = environment.filesToCompress[p];
-                  runFullCompressor(context, currentFile)
-                }
-              } else {
-                // showMessage('nothing to compress')
-                coscript.setShouldKeepAround(false)
-              }
-            }
-          } else {
-            showMessage('There are no exportable layers in the document.')
-            coscript.setShouldKeepAround(false)
-          }
+          exportAndCompress(context)
         }
       },
       setUp(context) {

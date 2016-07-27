@@ -406,7 +406,6 @@ var exportAndCompress = function(context){
     var exportFolder = openFileDialog()
     if (exportFolder) {
       // TODO: If there's any exportable layer selected, only export those. Otherwise, export everything under the sun
-      log(`Lets export ${potentialExports.count()} layers`)
       var exports = NSMutableArray.alloc().init()
       for (var exportCount=0; exportCount < potentialExports.count(); exportCount++) {
         var exportableLayer = potentialExports.objectAtIndex(exportCount)
@@ -419,7 +418,8 @@ var exportAndCompress = function(context){
           }
         }
       }
-      // First we'll need to actually export the assets!
+
+      // First we'll need to actually export the assets
       for (var k=0; k < exports.count(); k++) {
         var currentExport = exports.objectAtIndex(k)
         var render

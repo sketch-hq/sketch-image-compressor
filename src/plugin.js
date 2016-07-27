@@ -353,7 +353,7 @@ var onInterval = function(context){
     var msg = `finished in ${runningTime}. ${originalFileSize} → ${compressFileSize} (${ratio} off)`
     showMessage(msg, 10)
     log(msg)
-    coscript.setShouldKeepAround(false)
+    disableBackgroundPlugin()
   } else {
     var emojiAnimation = environment.emojis[++environment.progressAnimation % 12]
     showMessage(emojiAnimation + ' ' + environment.compressors.length + ' compressor' + (environment.compressors.length > 1 ? 's' : '') + ' running. ' + environment.completionRatio.toFixed(2) + '% done.' )
@@ -399,10 +399,19 @@ var openFileDialog = function(path){
   }
   return ret
 }
+var enableBackgroundPlugin = function(){
+  coscript.setShouldKeepAround(true)
+  pluginInterval = coscript.scheduleWithRepeatingInterval_jsFunction(0.1, onInterval)
+}
+var disableBackgroundPlugin = function(){
+  coscript.setShouldKeepAround(false)
+  pluginInterval.cancel()
+}
 var exportAndCompress = function(context){
   var potentialExports = context.document.allExportableLayers()
   if (potentialExports.count() > 0) {
     showMessage('Exporting compressed assets. This is going to take a bit…')
+    enableBackgroundPlugin()
     var exportFolder = openFileDialog()
     if (exportFolder) {
       // TODO: If there's any exportable layer selected, only export those. Otherwise, export everything under the sun
@@ -444,7 +453,6 @@ var exportAndCompress = function(context){
     }
   } else {
     showMessage('There are no exportable layers in the document.')
-    coscript.setShouldKeepAround(false)
   }
 }
 var compressAutomatically = function(context){
@@ -452,6 +460,7 @@ var compressAutomatically = function(context){
   environment.filesToCompress = getFilesToCompress(context.actionContext.exports)
 
   if (environment.filesToCompress.length > 0) {
+    enableBackgroundPlugin()
     for (var p = 0; p < environment.filesToCompress.length; p++) {
       var currentFile = environment.filesToCompress[p];
       // PNG Compressors.
@@ -464,7 +473,6 @@ var compressAutomatically = function(context){
     }
   } else {
     // showMessage('nothing to compress')
-    coscript.setShouldKeepAround(false)
   }
 }
 
@@ -473,7 +481,7 @@ export const SketchPlugin = {
   description: "A Plugin that compresses bitmap assets, right when you export them. This Plugin *requires* Sketch 3.8.",
   author: "Ale Muñoz",
   authorEmail: "ale@sketchapp.com",
-  version: "1.2.5",
+  version: "1.2.6",
   identifier: "com.sketchapp.plugins.image-compressor",
   homepage: "https:/github.com/BohemianCoding/image-compressor",
   compatibleVersion: 3.8,
@@ -482,8 +490,6 @@ export const SketchPlugin = {
       name: 'Export All Assets',
       handlers: {
         run : "___imageCompress_run_handler_",
-        setUp: "___imageCompress_setUp_handler_",
-        tearDown: "___imageCompress_tearDown_handler_",
         actions: {
           "ExportSlices": "___imageCompress_run_handler_",
           "Export": "___imageCompress_run_handler_"
@@ -497,16 +503,6 @@ export const SketchPlugin = {
           // Plugin was triggered from the menu, so crush with all the power we've got : )
           exportAndCompress(context)
         }
-      },
-      setUp(context) {
-        log('Set up Plugin')
-        // we need to keep the plugin loaded
-        coscript.setShouldKeepAround(true)
-        pluginInterval = coscript.scheduleWithRepeatingInterval_jsFunction(0.1, onInterval)
-      },
-      tearDown(context) {
-        log('Teardown Plugin')
-        pluginInterval.cancel()
       }
     }
   }

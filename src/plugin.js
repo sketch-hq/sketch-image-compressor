@@ -320,14 +320,6 @@ var fileSizeForPath = function(path){
 var ratioForNumbers = function(one, two){
   return (100 - ((two * 100) / one)).toFixed(2) + '%'
 }
-var readSettingsFromFile = function(){
-  // var settingsFilePath = MSPluginManager.mainPluginsFolderURL().path() + '/image-compressor.json'
-  // if (!NSFileManager.defaultManager().fileExistsAtPath(settingsFilePath)) {
-  //   // Copy file from Resources folder
-  // }
-  // log('Reading defaults from JSON file')
-  // var settings = JSON.parse(NSString.stringWithContentsOfFile_encoding_error(settingsFilePath, NSUTF8StringEncoding, nil))
-}
 var onInterval = function(context){
   var runningTime = prettyMs(progress * 100)
   var ratioPerCompressor = 100 / environment.totalCompressors

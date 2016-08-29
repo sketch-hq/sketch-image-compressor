@@ -6,7 +6,7 @@ Please note that the compression is lossless, so **no pixels will be harmed by r
 
 ## Installation
 
-- Download [Sketch Image Compressor](https://github.com/BohemianCoding/image-compressor/archive/master.zip) & unzip it.
+- Download [Sketch Image Compressor](https://github.com/BohemianCoding/sketch-image-compressor/archive/master.zip) & unzip it.
 - Double click **Sketch Image Compressor.sketchplugin** to install the Plugin.
 
 ## Usage

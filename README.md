@@ -1,6 +1,6 @@
-# Sketch Image Compressor
+# Bitmap Compressor
 
-A Plugin for Sketch that compresses your bitmap assets, to keep filesize to a minimum.
+A Plugin for Sketch that compresses your bitmap assets, to keep filesize to a minimum. This Plugin requires Sketch 3.8.
 
 Please note that the compression is lossless, so **no pixels will be harmed by running this Plugin** : )
 

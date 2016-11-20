@@ -54,10 +54,10 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
   case 'jpegoptim':
     /*
     jpegoptim v1.4.4beta  Copyright (c) 1996-2015, Timo Kokkonen
-    Usage: jpegoptim [options] <filenames> 
+    Usage: jpegoptim [options] <filenames>
 
       -d<path>, --dest=<path>
-                        specify alternative destination directory for 
+                        specify alternative destination directory for
                         optimized files (default is to overwrite originals)
       -f, --force       force optimization
       -h, --help        display this help and exit
@@ -257,7 +257,7 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
      b: brute force (experimental)
      By default, if this argument is not given, one that is most likely the best for this image is chosen by trying faster compression with each type.
      If this argument is used, all given filter types are tried with slow compression and the best result retained. A good set of filters to try is --filters=0me.
-    --keepchunks=nAME,nAME,...: keep metadata chunks with these names that would normally be removed, e.g. tEXt,zTXt,iTXt,gAMA, ... 
+    --keepchunks=nAME,nAME,...: keep metadata chunks with these names that would normally be removed, e.g. tEXt,zTXt,iTXt,gAMA, ...
      Due to adding extra data, this increases the result size. Keeping bKGD or sBIT chunks may cause additional worse compression due to forcing a certain color type, it is advised to not keep these for web images because web browsers do not use these chunks. By default ZopfliPNG only keeps (and losslessly modifies) the following chunks because they are essential: IHDR, PLTE, tRNS, IDAT and IEND.
 
     Usage examples:
@@ -275,7 +275,7 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
     }
     break;
   default:
-    
+
   }
   return args
 }
@@ -475,7 +475,7 @@ export const SketchPlugin = {
   authorEmail: "ale@sketchapp.com",
   version: "1.2.6",
   identifier: "com.sketchapp.plugins.image-compressor",
-  homepage: "https:/github.com/BohemianCoding/image-compressor",
+  homepage: "https://github.com/BohemianCoding/sketch-image-compressor",
   compatibleVersion: 3.8,
   commands: {
     imageCompress: {

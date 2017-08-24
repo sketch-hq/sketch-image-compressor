@@ -46,9 +46,12 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
     */
     // Our defaults: advpng -z3 fileName
     if (options == 'fast') {
-      args = NSArray.arrayWithObjects('-z2', fileName, nil)
+      // See if this works
+      args = NSArray.arrayWithArray(['-z2', fileName])
+      // args = NSArray.arrayWithObjects('-z2', fileName, nil)
     } else {
-      args = NSArray.arrayWithObjects('-z3', fileName, nil)
+      args = NSArray.arrayWithArray(['-z3', fileName])
+      // args = NSArray.arrayWithObjects('-z3', fileName, nil)
     }
     break;
   case 'jpegoptim':
@@ -97,7 +100,8 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
       --stdin           read input from standard input (instead of a file)
     */
     // Our options: jpegoptim --strip-all --all-normal fileName
-    args = NSArray.arrayWithObjects('--strip-all', '--all-normal', fileName, nil)
+    args = NSArray.arrayWithArray(['--strip-all', '--all-normal', fileName])
+    // args = NSArray.arrayWithObjects('--strip-all', '--all-normal', fileName, nil)
     break;
   case 'jpegtran':
     /*
@@ -129,7 +133,8 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
       -scans file    Create multi-scan JPEG per script file
     */
     // Our settings: jpegtran -copy none -optimize fileName
-    args = NSArray.arrayWithObjects('-copy none', '-optimize', fileName, nil)
+    args = NSArray.arrayWithArray(['-copy none', '-optimize', fileName])
+    // args = NSArray.arrayWithObjects('-copy none', '-optimize', fileName, nil)
     break;
   case 'optipng':
     /*
@@ -149,7 +154,8 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
     */
     // Our settings (fast): optipng -o1 fileName
     // Our settings (best): optipng -o5 fileName
-    args = options == 'fast' ? NSArray.arrayWithObjects('-o1', fileName, nil) : NSArray.arrayWithObjects('-o5', fileName, nil)
+    args = options == 'fast' ? NSArray.arrayWithArray(['-o1', fileName]) : NSArray.arrayWithArray(['-o5', fileName])
+    // args = options == 'fast' ? NSArray.arrayWithObjects('-o1', fileName, nil) : NSArray.arrayWithObjects('-o5', fileName, nil)
     break;
   case 'pngcrush':
     /*
@@ -222,9 +228,11 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
     // args = NSArray.arrayWithObjects('-ow', '-speed', '-noforce', '-blacken', '-bail', '-rem alla', fileName, nil)
     // args = NSArray.arrayWithObjects('-ow', '-new', '-noforce', '-blacken', '-bail', '-rem alla', fileName, nil)
     if (options == 'fast') {
-      args = NSArray.arrayWithObjects('-ow', '-new', fileName, nil)
+      args = NSArray.arrayWithArray(['-ow', '-new', fileName])
+      // args = NSArray.arrayWithObjects('-ow', '-new', fileName, nil)
     } else {
-      args = NSArray.arrayWithObjects('-ow', '-reduce', '-noforce', '-blacken', '-bail', '-rem alla', '-new', fileName, nil)
+      args = NSArray.arrayWithArray(['-ow', '-reduce', '-noforce', '-blacken', '-bail', '-rem alla', '-new', fileName])
+      // args = NSArray.arrayWithObjects('-ow', '-reduce', '-noforce', '-blacken', '-bail', '-rem alla', '-new', fileName, nil)
     }
     break;
   case 'zopflipng':
@@ -269,9 +277,11 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
     // Our options (quick): zopflipng -q -y
     // Our options (small): zopflipng -m -y --lossy_transparent
     if (options == 'fast') {
-      args = NSArray.arrayWithObjects('-q', '-y', fileName, fileName, nil)
+      args = NSArray.arrayWithArray(['-q', '-y', fileName, fileName])
+      // args = NSArray.arrayWithObjects('-q', '-y', fileName, fileName, nil)
     } else {
-      args = NSArray.arrayWithObjects('-m', '-y', fileName, fileName, nil)
+      args = NSArray.arrayWithArray(['-m', '-y', fileName, fileName])
+      // args = NSArray.arrayWithObjects('-m', '-y', fileName, fileName, nil)
     }
     break;
   default:
@@ -302,7 +312,8 @@ var runFullCompressor = function(context, fileObject){
     }
     var compressTask = NSTask.alloc().init()
     compressTask.setLaunchPath(compressorPath)
-    compressTask.setArguments(NSArray.arrayWithObjects(fileObject.path, nil))
+    compressTask.setArguments(NSArray.arrayWithArray([fileObject.path]))
+    // compressTask.setArguments(NSArray.arrayWithObjects(fileObject.path, nil))
     compressTask.launch()
     // compressTask.waitUntilExit()
     environment.compressors.push(compressTask)
@@ -473,7 +484,7 @@ export const SketchPlugin = {
   description: "A Plugin that compresses bitmap assets, right when you export them. This Plugin *requires* Sketch 3.8.",
   author: "Ale Muñoz",
   authorEmail: "ale@sketchapp.com",
-  version: "1.2.6",
+  version: "1.2.7",
   identifier: "com.sketchapp.plugins.image-compressor",
   homepage: "https://github.com/BohemianCoding/sketch-image-compressor",
   compatibleVersion: 3.8,

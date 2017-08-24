@@ -402,7 +402,7 @@ var disableBackgroundPlugin = function(){
 var exportAndCompress = function(context){
   var potentialExports = context.document.allExportableLayers()
   if (potentialExports.count() > 0) {
-    showMessage('Exporting compressed assets. This is going to take a bit…')
+    showMessage('Exporting compressed assets. This may take a while…')
     enableBackgroundPlugin()
     var exportFolder = openFileDialog()
     if (exportFolder) {

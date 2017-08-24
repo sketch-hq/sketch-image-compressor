@@ -484,7 +484,7 @@ export const SketchPlugin = {
   description: "A Plugin that compresses bitmap assets, right when you export them. This Plugin *requires* Sketch 3.8.",
   author: "Ale Muñoz",
   authorEmail: "ale@sketchapp.com",
-  version: "1.2.6",
+  version: "1.2.7",
   identifier: "com.sketchapp.plugins.image-compressor",
   homepage: "https://github.com/BohemianCoding/sketch-image-compressor",
   compatibleVersion: 3.8,

@@ -17,9 +17,8 @@ var prettyBytes = function(size){
   var r = prettyBytesOriginal(size).toUpperCase().replace(/\sB/g,' bytes')
   return r
 }
-var showMessage = function(txt, timeout){
-  var time = timeout || 5
-  NSApplication.sharedApplication().orderedDocuments().firstObject().displayMessage_timeout('Image Compressor: ' + txt, time)
+var showMessage = function(txt){
+  NSApplication.sharedApplication().orderedDocuments().firstObject().showMessage('Image Compressor: ' + txt)
 }
 var getArgumentsForCompressor = function(compressorName, fileName, options){
   var args
@@ -46,9 +45,9 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
     */
     // Our defaults: advpng -z3 fileName
     if (options == 'fast') {
-      args = NSArray.arrayWithObjects('-z2', fileName, nil)
+      args = NSArray.arrayWithArray(['-z2', fileName])
     } else {
-      args = NSArray.arrayWithObjects('-z3', fileName, nil)
+      args = NSArray.arrayWithArray(['-z3', fileName])
     }
     break;
   case 'jpegoptim':
@@ -96,8 +95,8 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
       --stdout          send output to standard output (instead of a file)
       --stdin           read input from standard input (instead of a file)
     */
-    // Our options: jpegoptim --strip-all --all-normal fileName
-    args = NSArray.arrayWithObjects('--strip-all', '--all-normal', fileName, nil)
+    // Our options: jpegoptim --strip-com --strip-exif --strip-iptc --strip-xmp --all-normal fileName
+    args = NSArray.arrayWithArray(['--strip-com', '--strip-exif', '--strip-iptc', '--strip-xmp', '--all-normal', fileName])
     break;
   case 'jpegtran':
     /*
@@ -129,7 +128,7 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
       -scans file    Create multi-scan JPEG per script file
     */
     // Our settings: jpegtran -copy none -optimize fileName
-    args = NSArray.arrayWithObjects('-copy none', '-optimize', fileName, nil)
+    args = NSArray.arrayWithArray(['-copy none', '-optimize', fileName])
     break;
   case 'optipng':
     /*
@@ -149,7 +148,7 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
     */
     // Our settings (fast): optipng -o1 fileName
     // Our settings (best): optipng -o5 fileName
-    args = options == 'fast' ? NSArray.arrayWithObjects('-o1', fileName, nil) : NSArray.arrayWithObjects('-o5', fileName, nil)
+    args = options == 'fast' ? NSArray.arrayWithArray(['-o1', fileName]) : NSArray.arrayWithArray(['-o5', fileName])
     break;
   case 'pngcrush':
     /*
@@ -219,12 +218,10 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
     // ImageOptim also uses a '-cc' option, but it seems to be nonexistant on this version of pngcrush
     // They also have an optional '-brute' option, but we'll leave that out by now…
     // Also, there's this warning on their code: "// pngcrush sometimes writes only PNG header (70 bytes)!"
-    // args = NSArray.arrayWithObjects('-ow', '-speed', '-noforce', '-blacken', '-bail', '-rem alla', fileName, nil)
-    // args = NSArray.arrayWithObjects('-ow', '-new', '-noforce', '-blacken', '-bail', '-rem alla', fileName, nil)
     if (options == 'fast') {
-      args = NSArray.arrayWithObjects('-ow', '-new', fileName, nil)
+      args = NSArray.arrayWithArray(['-ow', '-new', fileName])
     } else {
-      args = NSArray.arrayWithObjects('-ow', '-reduce', '-noforce', '-blacken', '-bail', '-rem alla', '-new', fileName, nil)
+      args = NSArray.arrayWithArray(['-ow', '-reduce', '-noforce', '-blacken', '-bail', '-rem alla', '-new', fileName])
     }
     break;
   case 'zopflipng':
@@ -269,9 +266,9 @@ var getArgumentsForCompressor = function(compressorName, fileName, options){
     // Our options (quick): zopflipng -q -y
     // Our options (small): zopflipng -m -y --lossy_transparent
     if (options == 'fast') {
-      args = NSArray.arrayWithObjects('-q', '-y', fileName, fileName, nil)
+      args = NSArray.arrayWithArray(['-q', '-y', '--keepchunks=iCCP,sRGB,gAMA,cHRM', fileName, fileName])
     } else {
-      args = NSArray.arrayWithObjects('-m', '-y', fileName, fileName, nil)
+      args = NSArray.arrayWithArray(['-m', '-y', '--keepchunks=iCCP,sRGB,gAMA,cHRM', fileName, fileName])
     }
     break;
   default:
@@ -302,7 +299,7 @@ var runFullCompressor = function(context, fileObject){
     }
     var compressTask = NSTask.alloc().init()
     compressTask.setLaunchPath(compressorPath)
-    compressTask.setArguments(NSArray.arrayWithObjects(fileObject.path, nil))
+    compressTask.setArguments(NSArray.arrayWithArray([fileObject.path]))
     compressTask.launch()
     // compressTask.waitUntilExit()
     environment.compressors.push(compressTask)
@@ -343,7 +340,7 @@ var onInterval = function(context){
     var ratio = ratioForNumbers(environment.originalFileSize, compressFileSize)
     compressFileSize = prettyBytes(compressFileSize)
     var msg = `finished in ${runningTime}. ${originalFileSize} → ${compressFileSize} (${ratio} off)`
-    showMessage(msg, 10)
+    showMessage(msg)
     log(msg)
     disableBackgroundPlugin()
   } else {
@@ -473,7 +470,7 @@ export const SketchPlugin = {
   description: "A Plugin that compresses bitmap assets, right when you export them. This Plugin *requires* Sketch 3.8.",
   author: "Ale Muñoz",
   authorEmail: "ale@sketchapp.com",
-  version: "1.2.6",
+  version: "1.3",
   identifier: "com.sketchapp.plugins.image-compressor",
   homepage: "https://github.com/BohemianCoding/sketch-image-compressor",
   compatibleVersion: 3.8,

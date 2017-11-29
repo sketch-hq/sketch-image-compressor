@@ -2,36 +2,27 @@
   "name": "sketch-image-compressor",
   "version": "1.2.7",
   "description": "A Plugin that compresses bitmap assets, right when you export them. This Plugin *requires* Sketch 3.8.",
+  "skpm": {
+    "name": "Sketch Image Compressor",
+    "main": "Sketch Image Compressor.sketchplugin",
+    "manifest": "src/manifest.json"
+  },
   "main": "src/plugin.js",
   "scripts": {
+    "build": "skpm-build && cp -r assets/* \"Sketch Image Compressor.sketchplugin/Contents/Resources\"",
+    "watch": "skpm-build --watch",
+    "start": "skpm-build --watch --run",
+    "postinstall": "npm run build && skpm-link",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ale Muñoz",
   "license": "MIT",
   "repository": "https://github.com/BohemianCoding/sketch-image-compressor",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-sketch-manifest-processor": "^0.1.1",
-    "babel-plugin-transform-es2015-arrow-functions": "^6.22.0",
-    "babel-plugin-transform-es2015-block-scoped-functions": "^6.22.0",
-    "babel-plugin-transform-es2015-block-scoping": "^6.26.0",
-    "babel-plugin-transform-es2015-constants": "^6.1.4",
-    "babel-plugin-transform-strict-mode": "^6.24.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babelify": "^7.2.0",
-    "browserify": "^14.5.0",
-    "del": "^3.0.0",
-    "expand-tilde": "^2.0.2",
-    "fs-extra": "^4.0.2",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^7.0.0",
-    "gulp-spawn": "^0.4.0",
-    "gulp-uglify": "^3.0.0",
+    "@skpm/builder": "^0.2.3"
+  },
+  "dependencies": {
     "pretty-bytes": "^4.0.2",
-    "pretty-ms": "^3.0.1",
-    "recursive-copy": "^2.0.7",
-    "run-sequence": "^2.2.0",
-    "vinyl-source-stream": "^1.1.0"
+    "pretty-ms": "^3.1.0"
   }
 }

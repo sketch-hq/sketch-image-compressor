@@ -149,9 +149,9 @@ export function exportAndCompress (context) {
   var potentialExports = context.document.allExportableLayers()
   if (potentialExports.count() > 0) {
     showMessage('Exporting compressed assets. This may take a while…')
-    enableBackgroundPlugin()
     var exportFolder = openFileDialog()
     if (exportFolder) {
+      enableBackgroundPlugin()
       // TODO: If there's any exportable layer selected, only export those. Otherwise, export everything under the sun
       var exportRequests = []
       for (var exportCount=0; exportCount < potentialExports.count(); exportCount++) {

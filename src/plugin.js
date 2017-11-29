@@ -24,7 +24,7 @@ var showMessage = function(txt){
 }
 
 var runCompressor = function(context, compressorName, fileName, options){
-  // log('Running compressor: ' + compressorName + ' for image ' + fileName)
+  // console.log('Running compressor: ' + compressorName + ' for image ' + fileName)
   var compressorPath = context.plugin.urlForResourceNamed(compressorName).path()
   var compressTask = NSTask.alloc().init()
   compressTask.setLaunchPath(compressorPath)
@@ -34,7 +34,7 @@ var runCompressor = function(context, compressorName, fileName, options){
   environment.compressors.push(compressTask)
   environment.totalCompressors += 1
   // compressTask.waitUntilExit() // This blocks the UI, which sucks for non-trivial jobs
-  log(compressorName + ': ' + fileName + ' — ' + (prettyBytes(fileSizeForPath(fileName))))
+  console.log(compressorName + ': ' + fileName + ' — ' + (prettyBytes(fileSizeForPath(fileName))))
 }
 var runFullCompressor = function(context, fileObject){
   if (fileObject.type == 'png' || fileObject.type == 'jpg') {
@@ -51,7 +51,7 @@ var runFullCompressor = function(context, fileObject){
     // compressTask.waitUntilExit()
     environment.compressors.push(compressTask)
     environment.totalCompressors += 1
-    log('Full Compression: ' + fileObject.path + ' — ' + (prettyBytes(fileSizeForPath(fileObject.path))))
+    console.log('Full Compression: ' + fileObject.path + ' — ' + (prettyBytes(fileSizeForPath(fileObject.path))))
   }
 }
 var fileSizeForPath = function(path){
@@ -70,7 +70,7 @@ var onInterval = function(context){
 
   for( var i=0; i < environment.compressors.length; i++ ) {
     var task = environment.compressors[i]
-    // log(task.terminationStatus())
+    // console.log(task.terminationStatus())
     if(!task.isRunning()) { // In theory this was deprecated in 10.9?
       environment.compressors.splice(i,1) // Remove compressor from array when we're done with it
       environment.completionRatio += ratioPerCompressor
@@ -88,7 +88,7 @@ var onInterval = function(context){
     compressFileSize = prettyBytes(compressFileSize)
     var msg = `finished in ${runningTime}. ${originalFileSize} → ${compressFileSize} (${ratio} off)`
     showMessage(msg)
-    log(msg)
+    console.log(msg)
     disableBackgroundPlugin()
   } else {
     var emojiAnimation = environment.emojis[++environment.progressAnimation % 12]
@@ -136,12 +136,10 @@ var openFileDialog = function(path){
   return ret
 }
 var enableBackgroundPlugin = function(){
-  coscript.setShouldKeepAround(true)
-  pluginInterval = coscript.scheduleWithRepeatingInterval_jsFunction(0.1, onInterval)
+  pluginInterval = setInterval(onInterval, 100)
 }
 var disableBackgroundPlugin = function(){
-  coscript.setShouldKeepAround(false)
-  pluginInterval.cancel()
+  clearInterval(pluginInterval)
 }
 
 // called from the menu

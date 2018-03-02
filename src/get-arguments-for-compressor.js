@@ -23,9 +23,9 @@ export default function getArgumentsForCompressor (compressorName, fileName, opt
     */
     // Our defaults: advpng -z3 fileName
     if (options == 'fast') {
-      args = NSArray.arrayWithArray(['-z2', fileName])
+      args = ['-z2', fileName]
     } else {
-      args = NSArray.arrayWithArray(['-z3', fileName])
+      args = ['-z3', fileName]
     }
     break;
   case 'jpegoptim':
@@ -74,7 +74,7 @@ export default function getArgumentsForCompressor (compressorName, fileName, opt
       --stdin           read input from standard input (instead of a file)
     */
     // Our options: jpegoptim --strip-com --strip-exif --strip-iptc --strip-xmp --all-normal fileName
-    args = NSArray.arrayWithArray(['--strip-com', '--strip-exif', '--strip-iptc', '--strip-xmp', '--all-normal', fileName])
+    args = ['--strip-com', '--strip-exif', '--strip-iptc', '--strip-xmp', '--all-normal', fileName]
     break;
   case 'jpegtran':
     /*
@@ -106,7 +106,7 @@ export default function getArgumentsForCompressor (compressorName, fileName, opt
       -scans file    Create multi-scan JPEG per script file
     */
     // Our settings: jpegtran -copy none -optimize fileName
-    args = NSArray.arrayWithArray(['-copy none', '-optimize', fileName])
+    args = ['-copy none', '-optimize', fileName]
     break;
   case 'optipng':
     /*
@@ -126,7 +126,7 @@ export default function getArgumentsForCompressor (compressorName, fileName, opt
     */
     // Our settings (fast): optipng -o1 fileName
     // Our settings (best): optipng -o5 fileName
-    args = options == 'fast' ? NSArray.arrayWithArray(['-o1', fileName]) : NSArray.arrayWithArray(['-o5', fileName])
+    args = options == 'fast' ? ['-o1', fileName] : ['-o5', fileName]
     break;
   case 'pngcrush':
     /*
@@ -197,9 +197,9 @@ export default function getArgumentsForCompressor (compressorName, fileName, opt
     // They also have an optional '-brute' option, but we'll leave that out by now…
     // Also, there's this warning on their code: "// pngcrush sometimes writes only PNG header (70 bytes)!"
     if (options == 'fast') {
-      args = NSArray.arrayWithArray(['-ow', '-new', fileName])
+      args = ['-ow', '-new', fileName]
     } else {
-      args = NSArray.arrayWithArray(['-ow', '-reduce', '-noforce', '-blacken', '-bail', '-rem alla', '-new', fileName])
+      args = ['-ow', '-reduce', '-noforce', '-blacken', '-bail', '-rem alla', '-new', fileName]
     }
     break;
   case 'zopflipng':
@@ -244,9 +244,9 @@ export default function getArgumentsForCompressor (compressorName, fileName, opt
     // Our options (quick): zopflipng -q -y
     // Our options (small): zopflipng -m -y --lossy_transparent
     if (options == 'fast') {
-      args = NSArray.arrayWithArray(['-q', '-y', '--keepchunks=iCCP,sRGB,gAMA,cHRM', fileName, fileName])
+      args = ['-q', '-y', '--keepchunks=iCCP,sRGB,gAMA,cHRM', fileName, fileName]
     } else {
-      args = NSArray.arrayWithArray(['-m', '-y', '--keepchunks=iCCP,sRGB,gAMA,cHRM', fileName, fileName])
+      args = ['-m', '-y', '--keepchunks=iCCP,sRGB,gAMA,cHRM', fileName, fileName]
     }
     break;
   default:

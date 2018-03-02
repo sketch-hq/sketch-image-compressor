@@ -15,7 +15,7 @@
     "postinstall": "npm run build && skpm-link",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Ale Muñoz",
+  "author": "Ale Muñoz <ale@sketchapp.com>",
   "license": "MIT",
   "repository": "https://github.com/BohemianCoding/sketch-image-compressor",
   "devDependencies": {

@@ -9,7 +9,7 @@
   },
   "main": "src/plugin.js",
   "scripts": {
-    "build": "skpm-build && cp -r assets/* \"Sketch Image Compressor.sketchplugin/Contents/Resources\"",
+    "build": "mkdir -p \"Sketch Image Compressor.sketchplugin/Contents/Resources\" && skpm-build && cp -r assets/* \"Sketch Image Compressor.sketchplugin/Contents/Resources\"",
     "watch": "skpm-build --watch",
     "start": "skpm-build --watch --run",
     "postinstall": "npm run build && skpm-link",
@@ -19,9 +19,12 @@
   "license": "MIT",
   "repository": "https://github.com/BohemianCoding/sketch-image-compressor",
   "devDependencies": {
-    "@skpm/builder": "^0.2.3"
+    "@skpm/builder": "^0.4.1"
   },
   "dependencies": {
+    "@skpm/child_process": "^0.1.2",
+    "@skpm/dialog": "^0.1.2",
+    "@skpm/fs": "^0.1.2",
     "pretty-bytes": "^4.0.2",
     "pretty-ms": "^3.1.0"
   }

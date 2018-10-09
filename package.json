@@ -19,13 +19,13 @@
   "license": "MIT",
   "repository": "https://github.com/BohemianCoding/sketch-image-compressor",
   "devDependencies": {
-    "@skpm/builder": "^0.4.1"
+    "@skpm/builder": "^0.5.10"
   },
   "dependencies": {
-    "@skpm/child_process": "^0.1.2",
-    "@skpm/dialog": "^0.1.2",
-    "@skpm/fs": "^0.1.2",
-    "pretty-bytes": "^4.0.2",
-    "pretty-ms": "^3.1.0"
+    "@skpm/child_process": "^0.2.4",
+    "@skpm/dialog": "^0.2.3",
+    "@skpm/fs": "^0.2.0",
+    "pretty-bytes": "^5.1.0",
+    "pretty-ms": "^4.0.0"
   }
 }

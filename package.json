@@ -5,11 +5,14 @@
   "skpm": {
     "name": "Sketch Image Compressor",
     "main": "Sketch Image Compressor.sketchplugin",
-    "manifest": "src/manifest.json"
+    "manifest": "src/manifest.json",
+    "assets": [
+      "assets/**/*"
+    ]
   },
   "main": "src/plugin.js",
   "scripts": {
-    "build": "mkdir -p \"Sketch Image Compressor.sketchplugin/Contents/Resources\" && skpm-build && cp -r assets/* \"Sketch Image Compressor.sketchplugin/Contents/Resources\"",
+    "build": "skpm-build",
     "watch": "skpm-build --watch",
     "start": "skpm-build --watch --run",
     "postinstall": "npm run build",
@@ -19,14 +22,13 @@
   "license": "MIT",
   "repository": "https://github.com/sketch-hq/sketch-image-compressor",
   "devDependencies": {
-    "@skpm/builder": "^0.5.10",
-    "serialize-javascript": ">=2.1.1"
+    "@skpm/builder": "^0.7.4"
   },
   "dependencies": {
-    "@skpm/child_process": "^0.2.4",
-    "@skpm/dialog": "^0.2.3",
-    "@skpm/fs": "^0.2.0",
-    "pretty-bytes": "^5.1.0",
-    "pretty-ms": "^4.0.0"
+    "@skpm/child_process": "^0.4.1",
+    "@skpm/dialog": "^0.3.0",
+    "@skpm/fs": "^0.2.5",
+    "pretty-bytes": "^5.3.0",
+    "pretty-ms": "^5.0.0"
   }
 }

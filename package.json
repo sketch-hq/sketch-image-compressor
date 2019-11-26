@@ -12,7 +12,7 @@
     "build": "mkdir -p \"Sketch Image Compressor.sketchplugin/Contents/Resources\" && skpm-build && cp -r assets/* \"Sketch Image Compressor.sketchplugin/Contents/Resources\"",
     "watch": "skpm-build --watch",
     "start": "skpm-build --watch --run",
-    "postinstall": "npm run build && skpm-link",
+    "postinstall": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ale Muñoz <ale@sketchapp.com>",

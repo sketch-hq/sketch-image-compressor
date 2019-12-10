@@ -19,7 +19,8 @@
   "license": "MIT",
   "repository": "https://github.com/BohemianCoding/sketch-image-compressor",
   "devDependencies": {
-    "@skpm/builder": "^0.5.10"
+    "@skpm/builder": "^0.5.10",
+    "serialize-javascript": ">=2.1.1"
   },
   "dependencies": {
     "@skpm/child_process": "^0.2.4",

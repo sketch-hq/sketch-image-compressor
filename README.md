@@ -6,7 +6,7 @@ Please note that the compression is lossless, so **no pixels will be harmed by r
 
 ## Installation
 
-- Download [Sketch Image Compressor](https://github.com/BohemianCoding/sketch-image-compressor/files/1439529/sketch.image.compressor.sketchplugin.zip) & unzip it.
+- Download [Sketch Image Compressor](https://github.com/sketch-hq/sketch-image-compressor/files/1439529/sketch.image.compressor.sketchplugin.zip) & unzip it.
 - Double click **Sketch Image Compressor.sketchplugin** to install the Plugin.
 
 

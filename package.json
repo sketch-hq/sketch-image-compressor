@@ -19,7 +19,7 @@
   "license": "MIT",
   "repository": "https://github.com/sketch-hq/sketch-image-compressor",
   "devDependencies": {
-    "@skpm/builder": "^0.5.10",
+    "@skpm/builder": "^0.7.7",
     "serialize-javascript": ">=3.1.0"
   },
   "dependencies": {
